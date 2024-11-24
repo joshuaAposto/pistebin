@@ -34,7 +34,7 @@ app.get('/paste/:id', (req, res) => {
     const content = pastes.get(id);
     res.send(`
         <html>
-        <head><title>Telepaste</title></head>
+        <head><title>Pistebin</title></head>
         <body>
             <pre style="white-space: pre-wrap; word-wrap: break-word;">${content}</pre>
         </body>
