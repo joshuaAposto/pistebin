@@ -11,6 +11,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const pastes = new Map();
 
+function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, (match) => {
+        const escapeMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;',
+        };
+        return escapeMap[match];
+    });
+}
+
 app.post('/api/save', (req, res) => {
     const { content } = req.body;
 
@@ -32,11 +45,13 @@ app.get('/paste/:id', (req, res) => {
     }
 
     const content = pastes.get(id);
+    const escapedContent = escapeHtml(content);
+
     res.send(`
         <html>
         <head><title>Pistebin</title></head>
         <body>
-            <pre style="white-space: pre-wrap; word-wrap: break-word;">${content}</pre>
+            <pre style="white-space: pre-wrap; word-wrap: break-word;">${escapedContent}</pre>
         </body>
         </html>
     `);
